@@ -69,7 +69,7 @@ body {
 }
 
 .holiday {
-    background-color: red;
+    background-color: #c20114;
     color: #fff;
 }
 
@@ -80,6 +80,5 @@ body {
     margin-top: auto;
     margin-bottom: 10px;
     text-align: center;
-    /* font-size: 14px; */
     line-height: 0.9;
 }
