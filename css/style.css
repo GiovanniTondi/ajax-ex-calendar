@@ -14,30 +14,72 @@ body {
 .wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100vh;
 }
 
+#mese {
+    position: relative;
+    margin-bottom: 15px;
+    font-size: 36px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#mese .fas {
+    padding: 25px 80px;
+    position: absolute;
+    font-size: 48px;
+    transition: all .3s;
+}
+
+#mese .left {
+    top: 0;
+    left: 0;
+}
+
+#mese .right {
+    top: 0;
+    right: 0;
+}
+
+#mese .fas:hover {
+    cursor: pointer;
+    border-radius: 15px;
+    color: #0019fe;
+}
+
 #griglia {
-    /* height: 700px; */
-    width: 700px;
+    width: 1050px;
     display: flex;
     flex-wrap: wrap;
-
 }
 
 .day {
+    position: relative;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
-    border: solid 1px #000;
+    width: 150px;
+    height: 130px;
+    border: solid 2px #fff;
+    background-color: #e9e6e6
 }
 
 .holiday {
     background-color: red;
     color: #fff;
+}
+
+.holiday .holiday-name {
+    position: absolute;
+    bottom: 0;
+    right: auto;
+    margin-top: auto;
+    margin-bottom: 10px;
+    text-align: center;
+    /* font-size: 14px; */
+    line-height: 0.9;
 }

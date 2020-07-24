@@ -16,18 +16,22 @@ Chiedere all'api quali sono le festività per il mese scelto
 Evidenziare le festività nella lista
 */
 
-function creaCalendario(mese) {
+function printMonth(numMese) {
 
-    // mesi = moment.months();
+    if (!numMese) {
+        numMese = 1;
+    }
 
-    var currMonth = moment("2018-" + mese, "YYYY-M");
-
+    var currMonth = moment("2018-" + numMese, "YYYY-M");
     var daysInMonth = moment(currMonth).daysInMonth();
-
 
     var template = $('#giorni-template').html();
     var compiled = Handlebars.compile(template);
     var target = $('#griglia');
+
+    var mese = $('#mese');
+    mese.find('span').text(currMonth.format('MMMM'));
+    mese.attr('data-monthid', numMese);
 
     target.html('');
 
@@ -39,52 +43,84 @@ function creaCalendario(mese) {
             day: i
         });
 
-        // console.log(dateComplete.format('YYYY-MM-DD'));
-
         var dayObj = compiled({
             'day': i,
             'dayOfWeek': dateComplete.format('ddd'),
             'dateComplete': dateComplete.format('YYYY-MM-DD')
         });
         target.append(dayObj);
-
     }
 
     addHolidays(currMonth);
+}
 
-    function addHolidays(currMonth) {
+function addHolidays(currMonth) {
 
-        var year = moment(currMonth).year();
-        var month = moment(currMonth).month();
+    var year = moment(currMonth).year();
+    var month = moment(currMonth).month();
 
-        $.ajax({
-            url: ' https://flynn.boolean.careers/exercises/api/holidays',
-            method: 'GET',
-            data: {
-                'month': month,
-                'year': year
-            },
-            success: function(data) {
+    $.ajax({
+        url: ' https://flynn.boolean.careers/exercises/api/holidays',
+        method: 'GET',
+        data: {
+            'month': month,
+            'year': year
+        },
+        success: function(data) {
 
-                var holidays = data['response'];
-                console.log(holidays);
+            var success = data['success'];
+            var holidays = data['response'];
+
+            if (success) {
 
                 for (var i = 0; i < holidays.length; i++) {
                     var elem = $('#griglia .day[data-dateComplete="' + holidays[i]['date'] + '"]');
                     elem.addClass('holiday');
                     elem.find('.holiday-name').text(holidays[i]['name']);
                 }
-
-            },
-            error: function (err) {
-                console.log('Errore', err);
+            } else {
+                console.log('NO DATA!');
             }
-        });
+
+        },
+        error: function (err) {
+            console.log('Errore:', err);
+        }
+    });
+}
+
+function addClickListener() {
+
+    $('#mese .fas').click(changeMonth);
+}
+
+function changeMonth() {
+
+    var elem = $(this);
+    var monthId = $('#mese').attr('data-monthid');
+
+    if (elem.hasClass('left')) {
+
+        if (monthId == 1) {
+            monthId = 12;
+        } else {
+            monthId--;
+        }
+
+    } else if (elem.hasClass('right')) {
+        if (monthId == 12) {
+            monthId = 1;
+        } else {
+            monthId++;
+        }
     }
+
+    printMonth(monthId);
 }
 
 function init() {
-    creaCalendario(1);
+    printMonth();
+    addClickListener();
 }
 
 $(document).ready(init);
