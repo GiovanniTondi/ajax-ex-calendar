@@ -33,6 +33,17 @@ function printMonth(numMese) {
     mese.find('span').text(currMonth.format('MMMM'));
     mese.attr('data-monthid', numMese);
 
+    if (numMese == 1) {
+        $('#mese .left').hide();
+        $('#mese .right').show();
+    } else if (numMese == 12) {
+        $('#mese .right').hide();
+        $('#mese .left').show();
+    } else {
+        $('#mese .left').show();
+        $('#mese .right').show();
+    }
+
     target.html('');
 
     for (var i = 1; i <= daysInMonth; i++) {
@@ -81,7 +92,6 @@ function addHolidays(currMonth) {
             } else {
                 console.log('NO DATA!');
             }
-
         },
         error: function (err) {
             console.log('Errore:', err);
@@ -100,19 +110,10 @@ function changeMonth() {
     var monthId = $('#mese').attr('data-monthid');
 
     if (elem.hasClass('left')) {
-
-        if (monthId == 1) {
-            monthId = 12;
-        } else {
-            monthId--;
-        }
+        monthId--;
 
     } else if (elem.hasClass('right')) {
-        if (monthId == 12) {
-            monthId = 1;
-        } else {
-            monthId++;
-        }
+        monthId++;
     }
 
     printMonth(monthId);
